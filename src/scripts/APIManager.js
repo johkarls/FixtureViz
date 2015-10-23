@@ -26,7 +26,6 @@ export default class APIManager {
                 if(e.target.status === 200) {
                     
                     resolve(e.target.responseText);
-                    // cb(JSON.parse(e.target.responseText));
                 }
             }
         

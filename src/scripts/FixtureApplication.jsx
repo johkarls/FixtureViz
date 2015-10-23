@@ -1,81 +1,145 @@
 import APIManager from './APIManager';
 import FixtureRow from './FixtureRow';
 import Helpers from './Helpers';
-import React from 'react'; 
+import Fixtures from './Fixtures';
+import React from 'react';
 import _ from 'underscore';
 
 
-export default class FixtureApplication extends React.Component { 
-  
-  constructor() {
-    super(); 
-    
-    this.apiManager = new APIManager();
-    this.helpers = new Helpers(); 
+export default class FixtureApplication extends React.Component {
 
-    
-    this.updateTable = this.updateTable.bind(this);
-    
-    this.state = {
-        teams :[]
-        
+    constructor() {
+        super();
+
+        this.apiManager = new APIManager();
+        this.fixtures = new Fixtures(); 
+        this.helpers = new Helpers();
+
+
+        this.onDataLoaded = this.onDataLoaded.bind(this);
+
+        this.state = {
+            teams: []
+        };
     }
-  }
-  
 
-  
-  onDataLoaded(data) {
-      var tableData = JSON.parse(data[0]);
-      var fixturesData = JSON.parse(data[1]); 
-  }
- updateTable(tableObj) {
-   
-    var teamsArr =  _.map(tableObj.standing, function(tableEntry) {
-     return {
-         teamName: tableEntry.teamName,
-         points: tableEntry.points, 
-         goalDifference : tableEntry.goalDifference,
-         goals: tableEntry.goals,
-         goalsAgainst: tableEntry.goalsAgainst, 
-         playedGames : tableEntry.playedGames,
-         position: tableEntry.position,
-         link:tableEntry._links.team.href
-     }
- });
-   
-   this.setState({teams: teamsArr});
-   
- }
-  
-  componentDidMount () {
-   /* this.apiManager.getTable(this.helpers.getLeagueIds("PremierLeague"), this.updateTable); 
-     this.apiManager.getFixtures(this.helpers.getLeagueIds("PremierLeague"), this.updateFixtures); */
-     
-     this.apiManager.getAllData(this.helpers.getLeagueIds("PremierLeague"), this.onDataLoaded);
-   
-  }
-  
-  componentWillUnmount () {
 
-  }
-  
-  renderTable() {
-     return _.map(this.state.teams, function(t) {
-         var shortInfo = `Placed ${t.position} with  ${t.points}  points`; 
-        return  <FixtureRow teamName={t.teamName}
+    updateTable(tableObj, fixturesObj) {
+
+        var teamsArr = _.map(tableObj.standing, (tableEntry) => {
+            return {
+                teamName: tableEntry.teamName,
+                points: tableEntry.points,
+                goalDifference: tableEntry.goalDifference,
+                goals: tableEntry.goals,
+                goalsAgainst: tableEntry.goalsAgainst,
+                playedGames: tableEntry.playedGames,
+                position: tableEntry.position,
+                link: tableEntry._links.team.href,
+                fixtures: []
+            };
+        });
+
+        var totalTeamCount = teamsArr.length; 
+        
+        _.each(fixturesObj.fixtures, (f) => {
+
+
+            var fixtureHomeTeam = _.find(teamsArr, (t)=>{
+               return t.teamName === f.homeTeamName;     
+            });
+            
+             var fixtureAwayTeam = _.find(teamsArr, (t)=>{
+               return t.teamName === f.awayTeamName;     
+            });
+            
+          
+            var fixture = {
+                id: f._links.self.href,
+                date: new Date(f.date),
+                gameweek: f.matchday,
+                status: f.status,
+                result: {
+                    homeGoals: f.homeTeamGoals,
+                    awayGoals: f.awayTeamGols
+                }, 
+            };
+            
+            
+            var homeDiff = totalTeamCount - fixtureHomeTeam.position;
+            var awayDiff = totalTeamCount - fixtureAwayTeam.position; 
+          
+            var homeValue = homeDiff/(homeDiff+awayDiff);
+            var awayValue = awayDiff/(homeDiff+awayDiff);
+                                                                                        
+                                                                                        
+            fixtureHomeTeam.fixtures.push(
+                {fixture: fixture,
+                 data: {
+                    opposition: fixtureAwayTeam.teamName,
+                    value: homeValue                 }    
+                });
+            fixtureAwayTeam.fixtures.push({
+                fixture: fixture, 
+                data: {
+                    opposition: fixtureHomeTeam.teamName,
+                    value: awayValue
+                }
+            });
+            
+            this.fixtures.addFixture(fixture);
+            
+        });
+
+        
+        this.setState({
+            teams: teamsArr
+        });
+
+    }
+
+    onDataLoaded(data) {
+        var tableData = JSON.parse(data[0]);
+        var fixturesData = JSON.parse(data[1]);
+
+        this.updateTable(tableData, fixturesData);
+    }
+
+
+
+    componentDidMount() {
+        /* this.apiManager.getTable(this.helpers.getLeagueIds("PremierLeague"), this.updateTable); 
+          this.apiManager.getFixtures(this.helpers.getLeagueIds("PremierLeague"), this.updateFixtures); */
+
+        this.apiManager.getAllData(this.helpers.getLeagueIds("PremierLeague"), this.onDataLoaded);
+
+    }
+
+    componentWillUnmount() {
+
+    }
+
+    
+
+    
+    renderTable() {
+        return _.map(this.state.teams, (t) => {
+            var shortInfo = `Placed ${t.position} with  ${t.points}  points`;
+            return <FixtureRow teamName={t.teamName}
                             shortInfo={shortInfo}
-                            key={t.teamName}/>
-     });
-  }
-  
-  
-  render () {
-       return (
-         <div className="table">
+                            fixtures={t.fixtures}
+                            key={t.teamName}/>;
+        });
+    }
+
+
+    render() {
+        return (
+            <div className="table">
             {this.renderTable()}
          </div>
-          
+
         );
-  }
-  
+    }
+
 }

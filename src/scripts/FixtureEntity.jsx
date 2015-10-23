@@ -18,7 +18,7 @@ export default class FixtureEntity extends React.Component{
   
   render () {
     return (
-      <div className="fixture_entity">{this.props.value}</div>
+      <div className="fixture_entity">{this.props.opposition + "-" + this.props.value}</div>
     );
   }
   

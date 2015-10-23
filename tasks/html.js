@@ -1,9 +1,9 @@
 module.exports = function (gulp, plugins,config) {
     return function (cb) {
-        gulp.src(config.paths.src + "/*.html")
-            .pipe(gulp.dest(config.paths.dest));
+        gulp.src('./src/index.html')
+        .pipe(gulp.dest('./dest/'));
             
-            cb();
+        cb();
             
     };
 };

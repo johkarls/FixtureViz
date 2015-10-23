@@ -1,6 +1,7 @@
 
 import FixtureEntity from './FixtureEntity';
 import React from 'react'; 
+import _ from 'underscore';
 
 
 export default class FixtureRow extends React.Component { 
@@ -14,6 +15,14 @@ export default class FixtureRow extends React.Component {
   componentDidMount () {
   }
   
+  renderFixtureEntities(){
+     return  _.map(this.props.fixtures, (f) => {
+          return <FixtureEntity value={f.data.value}
+                                 opposition={f.data.opposition}
+                                 key={f.fixture.id + "" + f.data.value }/>
+                
+      });
+  }
   
   render () {
     var FixtureTeamName = (props) => {
@@ -28,7 +37,7 @@ export default class FixtureRow extends React.Component {
      return  (
         <div>
             <FixtureTeamName name={this.props.teamName}/>
-            <br></br>
+            {this.renderFixtureEntities()}
         </div>
   
     );
@@ -37,11 +46,5 @@ export default class FixtureRow extends React.Component {
 }
 
 FixtureRow.propTypes = { 
-    value: React.PropTypes.number.isRequired,
     teamName: React.PropTypes.string.isRequired
-};
-
-FixtureRow.defaultProps = { 
-    value: 0,
-    teamName: "Manchester United"
 };

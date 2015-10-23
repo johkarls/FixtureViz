@@ -1,10 +1,11 @@
 var gulp = require('gulp');
 var plugins = require('gulp-load-plugins')({lazy: true});
 var config = require('./gulp-config')();
-var del = require('del');
 var babelify = require('babelify');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
+var ghPages = require('gulp-gh-pages');
+
 
 function getTask(task) {
     return require('./tasks/' + task)(gulp, plugins,config);
@@ -13,10 +14,10 @@ function getTask(task) {
 
 gulp.task('scripts', getTask('scripts'));
 gulp.task('html', getTask('html'));
-//gulp.task('styles', getTask('styles'));
-gulp.task('clean', require('./tasks/clean')(gulp, del, config));
+gulp.task('styles', getTask('styles'));
+gulp.task('clean', getTask('clean'));
 
-gulp.task('build', gulp.series('html' , function () {
+gulp.task('build',  gulp.series('html', gulp.parallel('styles' , function () {
     return browserify(
                 {   entries: './src/scripts/main.js',
                     extensions: ['.jsx', '.js'],
@@ -27,7 +28,7 @@ gulp.task('build', gulp.series('html' , function () {
         .bundle()
         .pipe(source('all.js'))
         .pipe(gulp.dest('dest/scripts'));
-}));
+})));
 
 gulp.task('watch', gulp.series('build', function(cb) {
     gulp.watch('./src/scripts/*.jsx', gulp.series('build'));
@@ -37,4 +38,10 @@ gulp.task('watch', gulp.series('build', function(cb) {
 }));
 
 gulp.task('default', gulp.series('watch'));
+
+
+gulp.task('deploy', function() {
+  return gulp.src('./dest/**/*')
+    .pipe(ghPages());
+});
 
