@@ -1,7 +1,6 @@
 import APIManager from './APIManager';
 import FixtureRow from './FixtureRow';
 import Helpers from './Helpers';
-import Fixtures from './Fixtures';
 import React from 'react';
 import _ from 'underscore';
 
@@ -12,7 +11,6 @@ export default class FixtureApplication extends React.Component {
         super();
 
         this.apiManager = new APIManager();
-        this.fixtures = new Fixtures(); 
         this.helpers = new Helpers();
 
 
@@ -69,15 +67,15 @@ export default class FixtureApplication extends React.Component {
             var homeDiff = totalTeamCount - fixtureHomeTeam.position;
             var awayDiff = totalTeamCount - fixtureAwayTeam.position; 
           
-            var homeValue = homeDiff/(homeDiff+awayDiff);
-            var awayValue = awayDiff/(homeDiff+awayDiff);
+            var homeValue = (homeDiff/(homeDiff+awayDiff)).toPrecision(3);
+            var awayValue = (awayDiff/(homeDiff+awayDiff)).toPrecision(3);
                                                                                         
                                                                                         
             fixtureHomeTeam.fixtures.push(
                 {fixture: fixture,
                  data: {
                     opposition: fixtureAwayTeam.teamName,
-                    value: homeValue                 }    
+                    value: homeValue}    
                 });
             fixtureAwayTeam.fixtures.push({
                 fixture: fixture, 
@@ -87,7 +85,7 @@ export default class FixtureApplication extends React.Component {
                 }
             });
             
-            this.fixtures.addFixture(fixture);
+ 
             
         });
 
@@ -119,9 +117,6 @@ export default class FixtureApplication extends React.Component {
 
     }
 
-    
-
-    
     renderTable() {
         return _.map(this.state.teams, (t) => {
             var shortInfo = `Placed ${t.position} with  ${t.points}  points`;
@@ -134,11 +129,13 @@ export default class FixtureApplication extends React.Component {
 
 
     render() {
-        return (
+      return (
+        <div className="fixture-application">
+            <div className="header"></div>
             <div className="table">
-            {this.renderTable()}
-         </div>
-
+                 {this.renderTable()}
+            </div>
+        </div>
         );
     }
 

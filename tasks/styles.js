@@ -1,4 +1,4 @@
-var cssnext = require('cssnext');
+
 var autoprefixer = require('autoprefixer');
 var cssnano = require('cssnano');
 
@@ -7,7 +7,6 @@ module.exports = function (gulp, plugins,config) {
     
       var processors = [
         autoprefixer({browsers: ['last 1 version']}),
-        cssnext(), 
         cssnano()
         
     ];

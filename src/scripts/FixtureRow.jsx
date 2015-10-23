@@ -27,17 +27,20 @@ export default class FixtureRow extends React.Component {
   render () {
     var FixtureTeamName = (props) => {
         return (
-            <div className="fixture_team_name_wrapper">
-                <p className="fixture_team_name">{this.props.teamName}</p>
-                <p className="fixture_team_info">{this.props.shortInfo}</p>
+            <div className="fixture-team">
+                <p className="name">{this.props.teamName}</p>
+                <p className="info">{this.props.shortInfo}</p>
             </div>
             )
 };
 
      return  (
-        <div>
+        <div className="fixture-row">
             <FixtureTeamName name={this.props.teamName}/>
-            {this.renderFixtureEntities()}
+            <div className="fixture-entities">
+                {this.renderFixtureEntities()}
+            </div>
+            
         </div>
   
     );

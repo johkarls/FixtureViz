@@ -17,8 +17,15 @@ export default class FixtureEntity extends React.Component{
   }
   
   render () {
+
+    var hiderStyle = {
+      bottom : (this.props.value  * 100.0) + '%'
+    };
+    
     return (
-      <div className="fixture_entity">{this.props.opposition + "-" + this.props.value}</div>
+      <div className="fixture-entity">
+        <div className="hider" style={hiderStyle}></div>
+      </div>
     );
   }
   

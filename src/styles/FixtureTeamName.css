@@ -1,0 +1,20 @@
+.fixture-team {
+        flex: 0 1 200px;
+        min-width: 100px;
+        padding: 10px;
+        text-align: center;
+        border-top: 1px solid #777;
+        border-left: 1px solid #777;
+        border-bottom: 1px solid #777;
+        height: 50px; 
+        box-sizing: border-box;
+}
+
+.fixture-team .name{
+        margin:0;
+}
+
+.fixture-team .info{
+          margin:0;
+          font-size: 12px; 
+}

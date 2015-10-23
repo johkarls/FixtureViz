@@ -1,0 +1,9 @@
+.fixture-row {
+    display: flex; 
+    margin-bottom: 5px;
+}
+
+.fixture-entities {
+    display: flex; 
+    flex: 1 1 auto;
+}
