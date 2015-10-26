@@ -7,7 +7,10 @@ export default class Helpers {
         this.leagueIds = {
             "PremierLeague" : 398
         }
+    
     }
+    
+  
     
     
        getLeagueIds(leagueId) {
@@ -15,3 +18,7 @@ export default class Helpers {
         
     }
 }
+
+Helpers.ItemTypes = {
+    FIXTURE_ROW: 'fixturerow'
+};

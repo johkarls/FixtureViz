@@ -1,11 +1,14 @@
 import APIManager from './APIManager';
 import FixtureRow from './FixtureRow';
 import Helpers from './Helpers';
+
 import React from 'react';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 import _ from 'underscore';
 
 
-export default class FixtureApplication extends React.Component {
+class FixtureApplication extends React.Component {
 
     constructor() {
         super();
@@ -38,7 +41,7 @@ export default class FixtureApplication extends React.Component {
             };
         });
 
-        var totalTeamCount = teamsArr.length; 
+        var totalTeamCount = teamsArr.length  +1; 
         
         _.each(fixturesObj.fixtures, (f) => {
 
@@ -117,6 +120,16 @@ export default class FixtureApplication extends React.Component {
 
     }
 
+  renderGameweeks() {
+      var gameWeeks =[]; 
+      for(var i = 0; i<(this.state.teams.length - 1) * 2; i++)
+      {
+          gameWeeks.push(<div className="gameweek" key={i}>{i+1}</div>)
+      }
+      
+      return gameWeeks;
+  }
+  
     renderTable() {
         return _.map(this.state.teams, (t) => {
             var shortInfo = `Placed ${t.position} with  ${t.points}  points`;
@@ -131,7 +144,12 @@ export default class FixtureApplication extends React.Component {
     render() {
       return (
         <div className="fixture-application">
-            <div className="header"></div>
+            <div className="header">
+                <div className="settings"></div>
+                <div className="gameweeks">
+                    {this.renderGameweeks()}
+                </div>
+            </div>
             <div className="table">
                  {this.renderTable()}
             </div>
@@ -140,3 +158,5 @@ export default class FixtureApplication extends React.Component {
     }
 
 }
+
+export default DragDropContext(HTML5Backend)(FixtureApplication);

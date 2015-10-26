@@ -2,12 +2,39 @@
 
 }
 
-.fixture-application.header {
+.fixture-application .header {
+    display: flex; 
+       
+}  
+.fixture-application .table {
     
 }
-    
-.fixture-application.table {
-    
+
+.fixture-application .settings {
+        width: 200px;
+        padding: 10px;
+        height: 50px; 
+        box-sizing: border-box;
+}
+.fixture-application .gameweeks {
+    display: flex; 
+    flex: 1 1 auto;
+     position: fixed;
+    z-index: 2;
+}
+
+.fixture-application .gameweek {
+     flex: 0 0 44px;
+    min-width: 44px;
+    height: 50px;
+    box-sizing: border-box;
+    border-right: 1px solid #555;
+    position: relative;
+    padding-top: 20px; 
+    color:white;
+    text-align: center;
+    background-color: #333;
+    opacity: 0.7;
 }
     
     
