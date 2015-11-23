@@ -10,9 +10,6 @@ export default class Helpers {
     
     }
     
-  
-    
-    
        getLeagueIds(leagueId) {
         return this.leagueIds[leagueId];
         

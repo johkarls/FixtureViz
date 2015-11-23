@@ -24,7 +24,9 @@ gulp.task('build',  gulp.series('html', gulp.parallel('styles' , function () {
                     debug: true
                 }
             )
-        .transform(babelify)
+        .transform(babelify.configure({
+        optional: ["es7.decorators"]
+    }))
         .bundle()
         .pipe(source('all.js'))
         .pipe(gulp.dest('dest/scripts'));

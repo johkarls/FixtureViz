@@ -19,7 +19,7 @@
 .fixture-application .gameweeks {
     display: flex; 
     flex: 1 1 auto;
-     position: fixed;
+ /*    position: fixed; */
     z-index: 2;
 }
 
