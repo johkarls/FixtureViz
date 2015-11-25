@@ -103,13 +103,17 @@ export default class FixtureApplication extends React.Component {
             var homeTeamData = {
                 oppositionTeam: fixtureAwayTeam,
                 homeOrAway: 'Home',
-                outcome: this.getFixtureOutcome(true, f.result.goalsHomeTeam, f.result.goalsAwayTeam, f.status)
+                outcome: this.getFixtureOutcome(true, f.result.goalsHomeTeam, f.result.goalsAwayTeam, f.status),
+                homeGoals: f.result.goalsHomeTeam,
+                awayGoals: f.result.goalsAwayTeam
             };
 
             var awayTeamData = {
                 oppositionTeam: fixtureHomeTeam,
                 homeOrAway: 'Away',
-                outcome: this.getFixtureOutcome(false, f.result.goalsHomeTeam, f.result.goalsAwayTeam, f.status)
+                outcome: this.getFixtureOutcome(false, f.result.goalsHomeTeam, f.result.goalsAwayTeam, f.status),
+                homeGoals: f.result.goalsHomeTeam,
+                awayGoals: f.result.goalsAwayTeam
             };
 
             const homeFixture = {...fixtureCommon, ...homeTeamData

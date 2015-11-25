@@ -71,42 +71,46 @@ export default class FixtureEntity extends React.Component {
 
             var homeTeamName;
             var awayTeamName;
-            var homeTeamGoalsOrPercentage;
-            var awayTeamGoalsOrPercentage;
+            var homeTeamPercentage;
+            var awayTeamPercentage;
+            var homeTeamGoals;
+            var awayTeamGoals;
 
             if (homeOrAway === "Home") {
                 homeTeamName = team.teamName;
                 awayTeamName = opposition.teamName;
+                homeTeamPercentage = this.props.value;
+                awayTeamPercentage = 1.0 - this.props.value;
+                homeTeamGoals = fixture.homeGoals;
+                awayTeamGoals = fixture.awayGoals;
             }
             else {
                 homeTeamName = opposition.teamName;
                 awayTeamName = team.teamName;
+                awayTeamPercentage = this.props.value;
+                homeTeamPercentage = 1.0 - this.props.value;
+                homeTeamGoals = fixture.homeGoals;
+                awayTeamGoals = fixture.awayGoals;
             }
 
             var fixtureEntity = this.refs.hoverInfoPanel;
 
-            var fixtureEntityStyle = {
-                right: 20,
-                top: 20,
-                position: 'fixed',
-                backgroundColor: '#666',
-                opacity: 0.85,
-                border: '1px solid #222',
-                width: '300px',
-                height: '200px',
-                zIndex: 10,
-                pointerEvents: 'none'
-            }
+            
+            
             return (
-                <svg style={fixtureEntityStyle}  width="200" height="200" xmlns="http://www.w3.org/2000/svg">
-                  <text class="teamText" x="10" y="30">
-                    {homeTeamName}
-                  </text>
+                <div className="hoverInfo">
+                  <div className="teamText">
+                    <div className="teamName">{homeTeamName}</div>
+                    <div className="numbers"><p>Prediction:</p><p>{(homeTeamPercentage * 100).toPrecision(3) + '%'}</p></div>
+                    <div className="numbers"><p>Goals</p><p>{homeTeamGoals !== -1 ? homeTeamGoals : 'Not yet played'}</p></div>
+                  </div>
                
-                   <text class="teamText" x="10" y="170">
-                    {awayTeamName}
-                  </text>
-                </svg>
+                   <div className="teamText">
+                   <div className="teamName"> {awayTeamName}</div>
+                   <div className="numbers"><p>Prediction:</p><p>{(awayTeamPercentage * 100).toPrecision(3) + '%'}</p></div>
+                   <div className="numbers"><p>Goals</p><p>{awayTeamGoals !== -1 ? awayTeamGoals : 'Not yet played'}</p></div>
+                  </div>
+                </div>
 
             )
         }
