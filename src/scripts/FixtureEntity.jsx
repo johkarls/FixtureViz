@@ -102,13 +102,13 @@ export default class FixtureEntity extends React.Component {
                   <div className="teamText">
                     <div className="teamName">{homeTeamName}</div>
                     <div className="numbers"><p>Prediction:</p><p>{(homeTeamPercentage * 100).toPrecision(3) + '%'}</p></div>
-                    <div className="numbers"><p>Goals</p><p>{homeTeamGoals !== -1 ? homeTeamGoals : 'Not yet played'}</p></div>
+                    <div className="numbers"><p>Goals:</p><p>{homeTeamGoals !== -1 ? homeTeamGoals : 'Not yet played'}</p></div>
                   </div>
                
                    <div className="teamText">
                    <div className="teamName"> {awayTeamName}</div>
                    <div className="numbers"><p>Prediction:</p><p>{(awayTeamPercentage * 100).toPrecision(3) + '%'}</p></div>
-                   <div className="numbers"><p>Goals</p><p>{awayTeamGoals !== -1 ? awayTeamGoals : 'Not yet played'}</p></div>
+                   <div className="numbers"><p>Goals:</p><p>{awayTeamGoals !== -1 ? awayTeamGoals : 'Not yet played'}</p></div>
                   </div>
                 </div>
 
